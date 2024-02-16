@@ -21,3 +21,27 @@ orcid = "https://orcid.org/0000-0003-2759-5764"
 name = "Department of Astrophysical Sciences"
 internal_id = "Princeton-Astro"
 address = "Princeton University, Princeton, NJ 08544, USA"
+[[technote.authors]]
+name = {given = "Tim", family = "Jenness"}
+internal_id = "jennesst"
+orcid = "https://orcid.org/0000-0001-5982-167X"
+[[technote.authors.affiliations]]
+name = "Rubin Observatory Project Office"
+internal_id = "RubinObs"
+address = "950 N. Cherry Ave., Tucson, AZ 85719, USA"
+[[technote.authors]]
+name = {given = "Andrei", family = "Salnikov"}
+internal_id = "salnikova"
+orcid = "https://orcid.org/0000-0002-3623-0161"
+[[technote.authors.affiliations]]
+name = "SLAC National Accelerator Laboratory"
+internal_id = "SLAC"
+address = "2575 Sand Hill Rd., Menlo Park, CA 94025, USA"
+[[technote.authors]]
+name = {given = "Nate B.", family = "Lust"}
+internal_id = "lustnb"
+orcid = "https://orcid.org/0000-0002-4122-9384"
+[[technote.authors.affiliations]]
+name = "Department of Astrophysical Sciences"
+internal_id = "Princeton-Astro"
+address = "Princeton University, Princeton, NJ 08544, USA"
