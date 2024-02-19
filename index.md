@@ -174,8 +174,8 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
 1. Add `DimensionRecord` container.  (Jim) [DM-41113](https://jira.lsstcorp.org/browse/DM-41113)
 2. Add `DatasetType` container.  (Tim) [DM-41079](https://jira.lsstcorp.org/browse/DM-41079)
 3. Add `Collection` container.  (Tim) [DM-41080](https://jira.lsstcorp.org/browse/DM-41080)
-4. Add `DataCoordinate` containers.  Depends on C8.  (Jim) [DM-41114](https://jira.lsstcorp.org/browse/DM-41114)
-5. Add `DatasetRef` container classes.  Depends on C9?, C11.  (?)  [DM-41115](https://jira.lsstcorp.org/browse/DM-41115)
+4. Add `DataCoordinate` containers.  Depends on C1.  (Jim) [DM-41114](https://jira.lsstcorp.org/browse/DM-41114)
+5. Add `DatasetRef` container classes.  Depends on C2?, C4.  (?)  [DM-41115](https://jira.lsstcorp.org/browse/DM-41115)
 
 ### Butler client base class (D)
 
@@ -187,25 +187,25 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
     * Needs `Butler.__new__` and `Butler.makeRepo` trampoline.
     * Needs work on config types (not pydantic-ification).
 
-1. Move registry caching here.  Depends on C8, C9, C10, D20.  (Andy) [DM-41117](https://jira.lsstcorp.org/browse/DM-41117) (partial ✅)
-2. Add Butler methods for dataset type and collection manipulation (read-only).  Depends on D21.  (?)
+2. Move registry caching here.  Depends on C1, C2, C3, D1.  (Andy) [DM-41117](https://jira.lsstcorp.org/browse/DM-41117) (partial ✅)
+3. Add Butler methods for dataset type and collection manipulation (read-only).  Depends on D2.  ([DM-41169](https://jira.lsstcorp.org/browse/DM-41169))
     * Change the `butler.registry` proxy to use these as appropriate, too.
-3. Merge `Registry` and `SqlRegistry` (Andy) ([DM-41235](https://jira.lsstcorp.org/browse/DM-41235)). ✅
+4. Merge `Registry` and `SqlRegistry` (Andy) ([DM-41235](https://jira.lsstcorp.org/browse/DM-41235)). ✅
 
 ### Query system (E)
 
 1. Make `daf_relation` objects serializable.  (David) [DM-41157](https://jira.lsstcorp.org/browse/DM-41157)
 2. Add level of indirection in relation trees: make leaf relations more abstract, less SQL.  (Jim or Andy) [DM-41158](https://jira.lsstcorp.org/browse/DM-41158)
-3. Add `DirectButler.query` itself and its result objects (and extend as needed).  Depends on E31.  (Jim or Andy) [DM-41159](https://jira.lsstcorp.org/browse/DM-41159)
-4. Make `Query` able to expand datastore records in returned `DatasetRefs`.  Depends on E32.  (Jim or Andy) [DM-41160](https://jira.lsstcorp.org/browse/DM-41160)
+3. Add `DirectButler.query` itself and its result objects (and extend as needed).  Depends on E2.  (Jim or Andy) [DM-41159](https://jira.lsstcorp.org/browse/DM-41159)
+4. Make `Query` able to expand datastore records in returned `DatasetRefs`.  Depends on E3.  (Jim or Andy) [DM-41160](https://jira.lsstcorp.org/browse/DM-41160)
 
 ### RemoteButler Client/Server (F)
 
 1. Add initial RemoteButler client and server with just initialization (David, Tim). [DM-41162](https://jira.lsstcorp.org/browse/DM-41162)
 2. Add initial deployment of butler server (David).
-3. Add cached-based (dataset type and collection) queries.  Depends on D22. (?)
-4. Add `RemoteButler.query`.  Depends on E30, E33. (?)
-5. Add `RemoteButler.get` (or maybe this is a `Butler` base class method?).  Depends on F51 and B3. (?)
+3. Add cached-based (dataset type and collection) queries.  Depends on D3. (?)
+4. Add `RemoteButler.query`.  Depends on E1, E4. (?)
+5. Add `RemoteButler.get` (or maybe this is a `Butler` base class method?).  Depends on F2 and B1. (?)
 
 ## Non-MVP Work Packages
 
@@ -256,11 +256,10 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
 
 ### Butler Client Server Phase II (K)
 
-1. Intentionally blank for nice numbering since Slack does not allow an ordered list to start at number 100.
-2. Add authentication immediately following MVP. Understanding how this affects the APIs is important.
+1. Add authentication immediately following MVP. Understanding how this affects the APIs is important.
     1. Add new tables (hence schema migration) to support ACLs.
     2. Can we add permissions model to `DirectButler`, too?  (not rigorously, but as guard against accidents)
-3. User authorization: read-only collection filtering would be a good test of [DMTN-182](https://dmtn-182.lsst.io)
+2. User authorization: read-only collection filtering would be a good test of [DMTN-182](https://dmtn-182.lsst.io)
     1. Only pass allowed collections to client cache.
     2. Still need to check permissions on butler.get because we do not trust anyone.
     3. Can a user make one of their RUN collections part of a group?
@@ -269,43 +268,43 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
     6. Tech note talks about ACLs?
        Is that how we allow user run to be visible by other user?
     7. Will we have to provide a way to mv datasets from run to run, whilst preserving provenance? (i.e., retaining the UUIDs when we move them).
-4. Switch to using signed URLs in butler.get()
+3. Switch to using signed URLs in butler.get()
     1. `DatasetRef` has the relative path in the record.
     2. Client passes this information back to server for signing.
        Server checks permission for accessing relative path and returns signed URL without requiring database lookup.
        Absolute URIs are always allowed and converted to signed (but we have to check that someone hasn’t prepended datastore root to their relative URI to bypass permissions check).
-5. Support butler.getURI in client
+4. Support butler.getURI in client
     1. Returns server URIs not signed URIs.
-6. More advanced query support: pagination.
+5. More advanced query support: pagination.
     1. Maybe implement default limit of 5000 results and then paginate if people explicitly ask for more.
     2. Deduplicate in server?
        With 100k returns you need to keep them all in memory.
     3. Would need to enable SQLAlchemy lazy returns if not deduplicating and if streaming the results directly to pagination files.
-7. `Butler.transfer_from()` remote to local? (implemented in workspace already?)
-8. `Butler.put()` implementation.
-9. `Butler.ingest()`
+6. `Butler.transfer_from()` remote to local? (implemented in workspace already?)
+7. `Butler.put()` implementation.
+8. `Butler.ingest()`
     1. What about “direct” mode?
        This surely can’t work unless the files being ingested are also visible to the server (so likely https direct).
        Allow but require the server to check to see if they are visible?
-10. `Butler.transfer_from` local butler to remote butler.
+9. `Butler.transfer_from` local butler to remote butler.
     1. `Datastore` records now in registry at both ends and not in datastore.
     2. Artifact Transactions?
        How to handle chained datastores at both ends where N datastores are transferring to M datastores.
-11. Butler export/import
+10. Butler export/import
     1. Do we rationalize import/export such that it uses JSON Pydantic serializations as we already use in client/server?
-12. Materialization on the client (as python data structure sent back to server) for graph building efficiency.
+11. Materialization on the client (as python data structure sent back to server) for graph building efficiency.
     1. The client knows it can read the pipeline definitions and python classes whereas the server only depends on `daf_butler` and does not depend on science pipelines docker container.
        We therefore can’t easily have a server side graph builder.
     2. We mimic server-side temporary tables by uploading a table stored on the client every time a query against it is executed.
     3. If this is too slow we could potentially store tables as files on the server, or even use non-temporary tables whose lifetimes we track some other way, but this all gets pretty messy.
        Moving more QG generation joins to client may be a better option, even if it means fetching more than we need from the DB up front.
-13. Can client server support `butler ingest-raws`?
+12. Can client server support `butler ingest-raws`?
     This is tricky in that it requires that dimension records need to be created for this.
     Do we trust people to create dimension records?
-14. When can client server support `registerDatasetType`?
+13. When can client server support `registerDatasetType`?
     Should it ever?
     For user-namespaced only?
-15. Is `syncDimensionData` ever allowed in client/server?
+14. Is `syncDimensionData` ever allowed in client/server?
 
 
 ## QuantumGraph Provenance Storage (L)
