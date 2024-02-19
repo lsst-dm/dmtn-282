@@ -8,10 +8,10 @@ It also includes the initial implementation plan agreed at that meeting.
 
 ## Introduction
 
-The Rubin Data Butler was formally delivered by the construction project in 2022 ([DMTR-271](https://dmtr-271.lsst.io)).
-For operations the requirements were modified with the switch to a hybrid data access centre ([DMTN-240](https://dmtn-240.lsst.io)) where the data are served from SLAC but the users are logged into the Rubin Science Platform on Google.
+The Rubin Data Butler was formally delivered by the construction project in 2022 {cite:p}`DMTR-271`.
+For operations the requirements were modified with the switch to a hybrid data access centre ([DMTN-240](https://dmtn-240.lsst.io); {cite:p}`DMTN-240`) where the data are served from SLAC but the users are logged into the Rubin Science Platform on Google.
 To handle this change the Butler client/server concept was developed but it has required some major conceptual changes in how we handle user interfactions with a data repository.
-These changes were considered in [DMTN-242](https://dmtn-242.lsst.io) and [DMTN-249](https://dmtn-249.lsst.io) and resulted in a decision to have a design meeting with the core developer team of Jim Bosch, Tim Jenness, Andy Salnikov, and Nate Lust, with additional input from Russ Allbery.
+These changes were considered in [DMTN-242](https://dmtn-242.lsst.io) {cite:p}`DMTN-242` and [DMTN-249](https://dmtn-249.lsst.io) {cite:p}`DMTN-249` and resulted in a decision to have a design meeting with the core developer team of Jim Bosch, Tim Jenness, Andy Salnikov, and Nate Lust, with additional input from Russ Allbery.
 This meeting was held at Princeton University 2023 October 3 to 2023 October 5.
 This document contains the discussion topics and vision that were used to seed the meeting, an initial plan for a minimal viable product (MVP) client/server deployment, and a Q&A session with Russ Allbery who provided his expertise on issues such as authentication and URL signing.
 
@@ -43,7 +43,7 @@ The following is a collection of thoughts written mostly by Jim Bosch for everyo
 * A workspace is an environment that can provide a butler-like interface sufficient for running pipelines.
     * An internal pipeline-execution workspace that writes directly to the repository’s datastore is associated with a long-lived artifact transaction that is opened when the workspace is created, and it is committed to "bring home" output datasets.
     * An external pipeline-execution workspace that writes elsewhere creates an (ideally) short-lived artifact transition only when it the workspace is committed, and it closes that transaction when the transfer back to the repository is complete.
-    * Note that in [DMTN-271](https://dmtn-271.lsst.io), Jim Bosch combined the "workspace" and "artifact transaction" concepts, which he thinks was a mistake, given how different internal and external workspaces are from the perspective of the central data repository.
+    * Note that in [DMTN-271](https://dmtn-271.lsst.io) {cite:p}`DMTN-271`, Jim Bosch combined the "workspace" and "artifact transaction" concepts, which he thinks was a mistake, given how different internal and external workspaces are from the perspective of the central data repository.
 * All active artifact transactions must be committed or abandoned before a schema migration or repository configuration change
 * New component division of responsibilities:
     * `LimitedButler` is largely unchanged, and it’s still an ABC.
@@ -149,7 +149,7 @@ The following is a collection of thoughts written mostly by Jim Bosch for everyo
 
 ### The infamous new query interface
 
-* Jim Bosch did a lot of prototyping on this in the original [DMTN-249](https://dmtn-249.lsst.io) even though it was mostly unrelated to the main goal of that technote.
+* Jim Bosch did a lot of prototyping on this in the original [DMTN-249](https://dmtn-249.lsst.io) {cite:p}`DMTN-249` even though it was mostly unrelated to the main goal of that technote.
 * There’s a not-obvious piece of work that needs to happen in order to implement that interface in `DirectButler` and implement `RemoteButler` query-result objects with method-chaining: a new `daf_relation`  engine whose leaf relations represent relational concepts that are a bit higher-level than the SQL tables, like "a dataset subquery".
     * This lets a `RemoteButler` client assemble a relation tree without having SQLAlchemy objects that should only live on the server, and then send that tree to the server to be expanded into a SQL-engine relation tree.
     * It’s also necessary for the new query interface, because it allows the modifier methods on the query-result objects to do things like, "replace this dataset subquery with one that returns the ingest_date".
@@ -269,7 +269,7 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
 1. Add authentication immediately following MVP. Understanding how this affects the APIs is important.
     1. Add new tables (hence schema migration) to support ACLs.
     2. Can we add permissions model to `DirectButler`, too?  (not rigorously, but as guard against accidents)
-2. User authorization: read-only collection filtering would be a good test of [DMTN-182](https://dmtn-182.lsst.io)
+2. User authorization: read-only collection filtering would be a good test of [DMTN-182](https://dmtn-182.lsst.io) {cite:p}`DMTN-182`
     1. Only pass allowed collections to client cache.
     2. Still need to check permissions on butler.get because we do not trust anyone.
     3. Can a user make one of their RUN collections part of a group?
@@ -408,7 +408,7 @@ Russ Allbery was invited to call into the meeting to answer questions that had a
     * On the other hand async-everywhere in server may need a lot of work and might cause its own problems.
     * User name comes in automatically in the HTTP header.
     * Groups-of-user use `Depends` scheme in FastAPI.
-    * If we have a butler client/server MVP we can immediately put that into Mobu [SQR-080](https://sqr-080.lsst.io) for scaling (does not need to be a notebook for this).
+    * If we have a butler client/server MVP we can immediately put that into Mobu [SQR-080](https://sqr-080.lsst.io) {cite:p}`SQR-080` for scaling (does not need to be a notebook for this).
 
 * Best practices for versioning -- method-by-method, or does a server declare a set of supported versions that all methods satisfy?
     * Slightly easier to v1 → v2 everything.
@@ -457,3 +457,10 @@ Russ Allbery was invited to call into the meeting to answer questions that had a
       At SLAC will need to call `getrgroups`.
     * Would be nice if `DirectButler` also checked collection names for users.
 * Tend to agree that users should not be able to even see lists of collections that they do not have permission to see.
+
+
+## References
+
+```{bibliography}
+  :style: lsst_aa
+```
