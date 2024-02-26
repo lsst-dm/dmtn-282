@@ -174,7 +174,7 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
 
 ### Datastore records and the new consistency model (B)
 
-1. Adding records to `DatasetRef`.  [DM-40053](https://jira.lsstcorp.org/browse/DM-40053), underway.  Unblocked.  (Andy) ✅
+1. Adding records to `DatasetRef`.  [DM-40053](https://jira.lsstcorp.org/browse/DM-40053), underway.  Unblocked.  (Andy)
     1. Add `OpaqueRecordSet`. \[We have decided for now that `OpaqueRecordSet` may not be necessary, instead to make `DatasetRef.datastore_records` private]
     2. Make `Datastore.get()` use records-on-`DatasetRef` when they’re already there. \[Already implemented on a branch]
     3. Make `Datastore`’s bridge attribute optional (required only for operations we’re not implementing in `RemoteButler`).
@@ -190,17 +190,17 @@ Minimal Viable Product (MVP) definition: a RemoteButler (client and server) that
 ### Butler client base class (D)
 
 1. Do the split into ABC `Butler` and concrete `DirectButler`.
-   Unblocked but disruptive to concurrent tickets.  (Tim or Andy) [DM-41116](https://jira.lsstcorp.org/browse/DM-41116) ✅
+   Unblocked but disruptive to concurrent tickets.  (Tim or Andy) [DM-41116](https://jira.lsstcorp.org/browse/DM-41116)
 
     * Start with Butler ABC defining a minimal interface.
     * Move methods to it as we support them in both `DirectButler` and `RemoteButler`?
     * Needs `Butler.__new__` and `Butler.makeRepo` trampoline.
     * Needs work on config types (not pydantic-ification).
 
-2. Move registry caching here.  Depends on C1, C2, C3, D1.  (Andy) [DM-41117](https://jira.lsstcorp.org/browse/DM-41117) (partial ✅)
+2. Move registry caching here.  Depends on C1, C2, C3, D1.  (Andy) [DM-41117](https://jira.lsstcorp.org/browse/DM-41117) (partial  )
 3. Add Butler methods for dataset type and collection manipulation (read-only).  Depends on D2.  ([DM-41169](https://jira.lsstcorp.org/browse/DM-41169))
     * Change the `butler.registry` proxy to use these as appropriate, too.
-4. Merge `Registry` and `SqlRegistry` (Andy) ([DM-41235](https://jira.lsstcorp.org/browse/DM-41235)). ✅
+4. Merge `Registry` and `SqlRegistry` (Andy) ([DM-41235](https://jira.lsstcorp.org/browse/DM-41235)).
 
 ### Query system (E)
 
