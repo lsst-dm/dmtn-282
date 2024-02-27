@@ -9,7 +9,7 @@ It also includes the initial implementation plan agreed at that meeting.
 ## Introduction
 
 The Rubin Data Butler was formally delivered by the construction project in 2022 {cite:p}`DMTR-271`.
-For operations the requirements were modified with the switch to a hybrid data access centre ([DMTN-240](https://dmtn-240.lsst.io); {cite:p}`DMTN-240`) where the data are served from SLAC but the users are logged into the Rubin Science Platform on Google.
+For operations the requirements were modified with the switch to a hybrid data access center ([DMTN-240](https://dmtn-240.lsst.io); {cite:p}`DMTN-240`) where the data are served from SLAC but the users are logged into the Rubin Science Platform on Google.
 To handle this change the Butler client/server concept was developed but it has required some major conceptual changes in how we handle user interfactions with a data repository.
 These changes were considered in [DMTN-242](https://dmtn-242.lsst.io) {cite:p}`DMTN-242` and [DMTN-249](https://dmtn-249.lsst.io) {cite:p}`DMTN-249` and resulted in a decision to have a design meeting with the core developer team of Jim Bosch, Tim Jenness, Andy Salnikov, and Nate Lust, with additional input from Russ Allbery.
 This meeting was held at Princeton University 2023 October 3 to 2023 October 5.
