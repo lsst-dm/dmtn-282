@@ -45,3 +45,10 @@ orcid = "https://orcid.org/0000-0002-4122-9384"
 name = "Department of Astrophysical Sciences"
 internal_id = "Princeton-Astro"
 address = "Princeton University, Princeton, NJ 08544, USA"
+[[technote.authors]]
+name = {given = "Russ", family = "Allbery"}
+internal_id = "allberyr"
+[[technote.authors.affiliations]]
+name = "Rubin Observatory Project Office"
+internal_id = "RubinObs"
+address = "950 N. Cherry Ave., Tucson, AZ 85719, USA"
